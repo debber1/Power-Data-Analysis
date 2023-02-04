@@ -1,5 +1,5 @@
 from visualise import *
-from util import integralTimeSeries
+from util import *
 class timePeriodData:
 
     #Constructor
@@ -27,6 +27,10 @@ class timePeriodData:
         """
         This function calculates key statistics based on the data
         """
+        
         # Calculate the total watt hours produced by the solar panels
         print(integralTimeSeries(self.solarData))
+
+        # Calculate the total amount of active hours for the solar panels
+        print(onTime(self.solarData))
         pass
