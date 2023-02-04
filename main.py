@@ -15,4 +15,5 @@ def main():
     series = loadDataDayScale(datetime.datetime(2023,2,3,0,0,0),2)
     for day in series:
         day.visualise()
+        day.statistics()
 main()

@@ -1,4 +1,5 @@
 from visualise import *
+from util import integralTimeSeries
 class timePeriodData:
 
     #Constructor
@@ -21,3 +22,11 @@ class timePeriodData:
         This function visualises the data of a timeperiod
         """
         visuTimeseries(self.solarData, "Graph for "+self.periodName)
+    
+    def statistics(self):
+        """
+        This function calculates key statistics based on the data
+        """
+        # Calculate the total watt hours produced by the solar panels
+        print(integralTimeSeries(self.solarData))
+        pass

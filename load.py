@@ -1,6 +1,6 @@
 from util import *
 from db import *
-import datetime
+from datetime import datetime, timedelta 
 from timePeriod import *
 def loadDataDayScale(startDay, numberOfDays):
     """
@@ -13,8 +13,8 @@ def loadDataDayScale(startDay, numberOfDays):
     days = []
     for day in range(0,numberOfDays):
         print("loading day "+str(day + 1)+" of "+str(numberOfDays))
-        data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + datetime.timedelta(days=day), startDay + datetime.timedelta(days=day+1))
-        period = timePeriodData((startDay+datetime.timedelta(days=day)).strftime("%d/%m/%Y"), startDay + datetime.timedelta(days=day), startDay + datetime.timedelta(days=day+1), data)
+        data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + timedelta(days=day), startDay + timedelta(days=day+1))
+        period = timePeriodData((startDay+timedelta(days=day)).strftime("%d/%m/%Y"), startDay + timedelta(days=day), startDay + timedelta(days=day+1), data)
         days.append(period)
     return days
  
