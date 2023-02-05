@@ -91,3 +91,43 @@ def rebaseTimeSeriesSolar(data):
     for i, v in ts.items():
         rebased.append([i,v])
     return rebased
+
+def mostIntesiveInterval(data, interval = 900):
+    """
+    This function calculates the most intensive power interval for a time period
+
+    :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]:  data to be averaged
+    :param interval: Int: The duration of the time interval in seconds
+    :return: List: [startInterval,TotalPower]
+    """
+    average = averageOverInterval(data,interval)
+    max = average[0]
+    for point in average:
+        if max[1] > point[1]:
+            continue
+        max = point
+    return max
+
+
+
+
+def averageOverInterval(data, interval = 900):
+    """
+    This function averages a graph over a given interval: for example: Average value for 00:00-00:15, ...
+
+    :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]:  data to be averaged
+    :param interval: Int: Desired interval (in seconds) (standard = 15min)
+    :return: List of List: A list with lists containing data points: [[00:00, average], [00:15, Average]]
+    """
+    values = []
+    times = []
+    for index in data:
+        values.append(index[1])
+        times.append(index[0])
+    ts = pd.Series(data=values, index=times)
+    ts = ts.resample(str(interval)+"s").mean()
+    rebased = []
+    for i, v in ts.items():
+        rebased.append([i,v])
+    return rebased
+    

@@ -22,6 +22,7 @@ class timePeriodData:
         This function visualises the data of a timeperiod
         """
         visuTimeseries(self.solarData, "Graph for "+self.periodName)
+        # barPlotTimeSeries(self.solarData, "15 minute averages for "+self.periodName)
     
     def statistics(self):
         """
@@ -35,6 +36,9 @@ class timePeriodData:
 
         # Calculate the total amount of active hours for the solar panels
         results["Active time"] = activeTime(self.solarData)
+
+        # Calculate the most intensive period of solar generation
+        results["Most intensive interval"] = mostIntesiveInterval(self.solarData)
 
         return results
 
