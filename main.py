@@ -3,6 +3,7 @@ from db import *
 from visualise import *
 from util import *
 from load import *
+from analysis import *
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
@@ -16,6 +17,7 @@ def main():
 
     series = loadDataDayScale(datetime.datetime(2023,2,3,0,0,0),3)
     for day in series:
-        day.visualise()
+        # day.visualise()
         day.printStats()
+    solarAnalysis(series)
 main()
