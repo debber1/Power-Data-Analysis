@@ -26,11 +26,22 @@ class timePeriodData:
     def statistics(self):
         """
         This function calculates key statistics based on the data
+
+        :return: Dict: A dictionary with the results of the statistical analysis
         """
-        
+        results = {}
         # Calculate the total watt hours produced by the solar panels
-        print(integralTimeSeries(self.solarData))
+        results["Total power"] = integralTimeSeries(self.solarData)
 
         # Calculate the total amount of active hours for the solar panels
-        print(onTime(self.solarData))
-        pass
+        results["Active time"] = activeTime(self.solarData)
+
+        return results
+
+    def printStats(self):
+        """
+        This function prints the results of the statistical analysis
+        """
+        stats = self.statistics()
+        print("Statistics for: "+self.periodName)
+        print(stats)    

@@ -14,7 +14,7 @@ def loadDataDayScale(startDay, numberOfDays):
     for day in range(0,numberOfDays):
         print("loading day "+str(day + 1)+" of "+str(numberOfDays))
         data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + timedelta(days=day), startDay + timedelta(days=day+1))
-        period = timePeriodData((startDay+timedelta(days=day)).strftime("%d/%m/%Y"), startDay + timedelta(days=day), startDay + timedelta(days=day+1), data)
+        period = timePeriodData((startDay+timedelta(days=day)).strftime("%d/%m/%Y"), startDay + timedelta(days=day), startDay + timedelta(days=day+1), rebaseTimeSeriesSolar(data))
         days.append(period)
     return days
  

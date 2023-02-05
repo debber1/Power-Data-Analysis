@@ -1,5 +1,6 @@
 from datetime import datetime, timezone, timedelta
 from config import *
+import pandas as pd
 
 def utcToLocal(date):
     return date.replace(tzinfo=timezone.utc).astimezone(tz=None)
@@ -43,7 +44,7 @@ def integralTimeSeries(data):
 
     return power
 
-def onTime(data):
+def activeTime(data):
     """
     This function calculates the amount of time a device was active based on power usage
 
@@ -64,3 +65,29 @@ def onTime(data):
         total += (data2[0]-data1[0]).total_seconds()/3600
     
     return total
+
+def rebaseTimeSeriesSolar(data):
+    """
+    This function rebases a time series to a common base to enable proper comparisons between datasets
+
+    :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]
+    :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
+    """
+    # Removing first and last index because it screws up the interpolation due to the way data gets collected by the irl inverter
+    del data[0]
+    del data[-1]
+
+
+    values = []
+    times = []
+    for index in data:
+        values.append(index[1])
+        times.append(index[0])
+    ts = pd.Series(data=values, index=times)
+    # print(ts)
+    ts = ts.resample("1s").interpolate("time")
+    # print(ts)
+    rebased = []
+    for i, v in ts.items():
+        rebased.append([i,v])
+    return rebased
