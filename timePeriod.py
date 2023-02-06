@@ -22,7 +22,7 @@ class timePeriodData:
         This function visualises the data of a timeperiod
         """
         visuTimeseries(self.solarData, "Graph for "+self.periodName)
-        # barPlotTimeSeries(self.solarData, "15 minute averages for "+self.periodName)
+        barPlotTimeSeries(averageOverInterval(self.solarData), "15 minute averages for "+self.periodName)
     
     def statistics(self):
         """

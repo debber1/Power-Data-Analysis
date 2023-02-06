@@ -14,31 +14,19 @@ def solarAnalysis(periods):
     totalPower = []
     activeTime = []
     mostIntensiveInterval = []
+    mostIntensiveIntervalPower = []
     for period in periods:
         time.append(period.periodStart)
         temp = period.statistics()
         totalPower.append(temp["Total power"])
         activeTime.append(temp["Active time"])
-        mostIntensiveInterval.append(temp["Most intensive interval"])
+        mostIntensiveInterval.append(temp["Most intensive interval"][0])
+        mostIntensiveIntervalPower.append(temp["Most intensive interval"][1])
 
-    dataTotalPower = []
-    for i in range(len(totalPower)):
-        dataTotalPower.append([time[i],totalPower[i]])
-    barPlotTimeSeries(dataTotalPower, "Total power generation per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time,totalPower), "Total power generation per day", 0.5)
 
-    dataActiveTime = []
-    for i in range(len(activeTime)):
-        dataActiveTime.append([time[i],activeTime[i]])
-    barPlotTimeSeries(dataActiveTime, "Total active hours per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time, activeTime), "Total active hours per day", 0.5)
 
-    index = pd.date_range(periods[0].periodStart, periods[0].periodEnd, freq=str(int(mostIntensiveInterval[0][0].freq.nanos/10**9))+"s").strftime('%H:%M:%S')
-    averagePeriodList = []
-    for i in index:
-        averagePeriodList.append([i,0])
-    
-    for i in mostIntensiveInterval:
-        for j in averagePeriodList:
-            if i[0].strftime('%H:%M:%S') == j[0]:
-                j[1] += 1
-                continue
-    barPlotDayOverview(averagePeriodList, "Overview of peak average periods")
+    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "Most intensive interval average power per day", 0.5)
+
+    barPlotDayOverview(periodOverviewList(periods[0].periodStart, periods[0].periodEnd, mostIntensiveInterval), "Overview of peak average periods")

@@ -108,9 +108,6 @@ def mostIntesiveInterval(data, interval = 900):
         max = point
     return max
 
-
-
-
 def averageOverInterval(data, interval = 900):
     """
     This function averages a graph over a given interval: for example: Average value for 00:00-00:15, ...
@@ -130,4 +127,43 @@ def averageOverInterval(data, interval = 900):
     for i, v in ts.items():
         rebased.append([i,v])
     return rebased
+
+def mergeTimeSeries(time, value):
+    """
+    This function merges a time list with a value list
+
+    :param time: List: A list with the timestamps
+    :param Value: List: A list with the corresponding values
+    :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
+    """ 
+
+    if len(time) != len(value):
+        return 0
+    result = []
+    for i in range(len(value)):
+        result.append([time[i], value[i]])
+    return result
+
+def periodOverviewList(periodStart, periodEnd, data):
+    """
+    This function generates the list needed to plot a histogram of popular intervals over a timeperiod
+
+    :param periodStart: DateTime: The start of the period
+    :param periodEnd: DateTime: The end of the period
+    :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
+    """
+    index = pd.date_range(periodStart, periodEnd, freq=str(int(data[0].freq.nanos/10**9))+"s").strftime('%H:%M:%S')
+    result = []
+    for i in index:
+        result.append([i,0])
+    
+    # Nothing to see here, this is perfectly fine :)
+    for i in data:
+        for j in result:
+            if i.strftime('%H:%M:%S') == j[0]:
+                j[1] += 1
+                continue
+    return result
+
+
     
