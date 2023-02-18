@@ -15,9 +15,9 @@ def main():
     # data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), datetime.datetime(2023,2,4,0,0,0), datetime.datetime(2023,2,5,0,0,0))
     # visuTimeseries(data)
 
-    series = loadDataDayScale(datetime.datetime(2023,2,3,0,0,0),4)
-    for day in series:
+    series = loadDataDayScale(datetime.datetime(2023,2,4,0,0,0),15)
+    # for day in series:
         # day.visualise()
-        day.printStats()
-    solarAnalysis(series)
+        # day.printStats()
+    solarStatistics(series,6)
 main()
