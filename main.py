@@ -15,10 +15,10 @@ def main():
     # data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), datetime.datetime(2023,2,4,0,0,0), datetime.datetime(2023,2,5,0,0,0))
     # visuTimeseries(data)
 
-    # series = loadDataDayScale(datetime.datetime(2023,2,4,0,0,0),23)
-    seriesPowerMeter = loadDataPowerMeterDayScale(datetime.datetime(2023,2,25,0,0,0),2)
-    for day in seriesPowerMeter:
-        day.visualise()
-        day.printStats()
-    # solarStatistics(series,8)
+    series = loadDataDayScale(datetime.datetime(2023,2,4,0,0,0),23)
+    seriesPowerMeter = loadDataPowerMeterDayScale(localToUtc(datetime.datetime(2023,2,25,0,0,0)),7)
+    #for day in seriesPowerMeter:
+    #    day.visualise()
+    #    day.printStats()
+    solarStatistics(series,8)
 main()

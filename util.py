@@ -5,6 +5,9 @@ import pandas as pd
 def utcToLocal(date):
     return date.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
+def localToUtc(date):
+    return date.replace(tzinfo=None).astimezone(tz=timezone.utc)
+
 def integralTimeSeries(data):
     """
     This function calculates the discrete integral of a timeseries while taking real life limitations into account (such as reporting at the beginning and ending of a solar cycle)
