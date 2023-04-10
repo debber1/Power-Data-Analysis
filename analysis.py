@@ -27,6 +27,25 @@ def solarAnalysis(periods, PID, returns):
 
     returns[PID] = [time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower]
 
+def powerAnalysis(periods, PID, returns):
+    """
+    This function performs an analysis over multiple timeperiods
+
+    :param periods: List of timePeriodData: a list of time period data
+    """
+    print("ANALYSIS: Starting statistics")
+    # Extracting key statistics
+    time = []
+    mostIntensiveInterval = []
+    mostIntensiveIntervalPower = []
+    for period in periods:
+        time.append(period.periodStart)
+        temp = period.statistics()
+        mostIntensiveInterval.append(temp["Most intensive interval power"][0])
+        mostIntensiveIntervalPower.append(temp["Most intensive interval power"][1])
+
+    returns[PID] = [time, mostIntensiveInterval, mostIntensiveIntervalPower]
+
 
 
 def showGeneratedData(firstPeriod, time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower):
@@ -38,6 +57,12 @@ def showGeneratedData(firstPeriod, time, totalPower, activeTime, mostIntensiveIn
     barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "Most intensive interval average power per day", 0.5)
 
     barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "Overview of peak average periods")
+
+def showGeneratedPowerData(firstPeriod, time, mostIntensiveInterval, mostIntensiveIntervalPower):
+
+    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "Most intensive interval average power usage per day", 0.5)
+
+    barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "Overview of peak average usage periods")
 
 def solarStatistics(periods, threads):
     """
@@ -81,3 +106,34 @@ class myThread:
         self.data = data
    def run(self):
         self.value = solarAnalysis(self.data)
+
+def powerStatistics(periods, threads):
+    """
+    This function performs an analysis over multiple timeperiods
+
+    :param periods: List of timePeriodData: a list of time period data
+    """
+    time = []
+    mostIntensiveInterval = []
+    mostIntensiveIntervalPower = []
+    startTime = datetime.now()
+    threadslist = []
+    devisions = int(math.floor(len(periods)/threads))
+    manager = multiprocessing.Manager()
+    return_dict = manager.dict()
+    for x in range(threads-1):
+        threadslist.append(multiprocessing.Process(target = powerAnalysis, args= (periods[(x*devisions):((x+1)*devisions)],x, return_dict)))
+        pass
+    threadslist.append(multiprocessing.Process(target = powerAnalysis, args= (periods[devisions*(threads-1):],threads, return_dict)))
+    for y in threadslist:
+        y.start()
+    for y in threadslist:
+        y.join()
+    for y in range(threads):
+        results = return_dict.values()[y]
+        time += results[0]
+        mostIntensiveInterval += results[1]
+        mostIntensiveIntervalPower += results[2]
+    endTime = datetime.now()
+    print("ANALYSIS: It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
+    showGeneratedPowerData(periods[0], time, mostIntensiveInterval, mostIntensiveIntervalPower)

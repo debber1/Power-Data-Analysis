@@ -3,7 +3,7 @@ from util import *
 class timePeriodData:
 
     #Constructor
-    def __init__(self, periodName, periodStart, periodEnd, solarData):
+    def __init__(self, periodName, periodStart, periodEnd, solarData, powerData):
         """
         This is the constructor of a time period.
 
@@ -11,18 +11,27 @@ class timePeriodData:
         :param periodStart: DateTime: Start of the period
         :param periodEnd: DateTime: End of the period
         :param solarData: List of List: A List containing lists of datapoints, [[time, data], [time, data]]
+        :param powerData: List of List: A List containing lists of datapoints, [[time, data], [time, data]]
         """
         self.periodName = periodName
         self.periodStart = periodStart
         self.periodEnd = periodEnd
         self.solarData = solarData
+        self.powerData = powerData
     
+    def visualiseSolar(self):
+        """
+        This function visualises the solar data of a timeperiod
+        """
+        visuTimeseries(self.solarData, "Solar graph for "+self.periodName)
+        barPlotTimeSeries(averageOverInterval(self.solarData), "15 minute solar averages for "+self.periodName)
+
     def visualise(self):
         """
         This function visualises the data of a timeperiod
         """
-        visuTimeseries(self.solarData, "Graph for "+self.periodName)
-        barPlotTimeSeries(averageOverInterval(self.solarData), "15 minute averages for "+self.periodName)
+
+        visuThreeTimeseries(self.powerData, self.solarData, "Graph for "+self.periodName)
     
     def statistics(self):
         """
@@ -40,6 +49,8 @@ class timePeriodData:
         # Calculate the most intensive period of solar generation
         results["Most intensive interval"] = mostIntesiveInterval(self.solarData)
 
+        # Calculate the most intensive period of power usage
+        results["Most intensive interval power"] = mostIntesiveInterval(self.powerData)
         return results
 
     def printStats(self):
