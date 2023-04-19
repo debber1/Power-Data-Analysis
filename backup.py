@@ -29,6 +29,6 @@ tsPower = pd.Series(data=values, index=times)
 
 print("data is now a time series")
 
-tsSolar.to_csv('raw_data_solar.csv', index=True)
-tsPower.to_csv('raw_data_power.csv', index=True)
+tsSolar.to_csv('raw_data_solar'+str(datetime.now(timezone.utc))+'.csv', index=True)
+tsPower.to_csv('raw_data_power'+str(datetime.now(timezone.utc))+'.csv', index=True)
 
