@@ -16,7 +16,7 @@ def main():
     # visuTimeseries(data)
 
     # series = loadDataDayScale(datetime.datetime(2023,2,4,0,0,0),23)
-    seriesPowerMeter = loadDataDayScale(localToUtc(datetime.datetime(2023,2,25,0,0,0)),30)
+    seriesPowerMeter = loadDataDayScale(localToUtc(datetime.datetime(2023,2,25,0,0,0)),54)
     #seriesPowerMeter[1].visualise()
     #for day in seriesPowerMeter:
     #    day.visualise()

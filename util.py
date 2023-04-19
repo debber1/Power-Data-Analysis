@@ -88,6 +88,7 @@ def rebaseTimeSeriesSolar(data):
         times.append(index[0])
     ts = pd.Series(data=values, index=times)
     # print(ts)
+    ts.index = pd.to_datetime(ts.index, utc=True)
     ts = ts.resample("1s").interpolate("time")
     # print(ts)
     rebased = []
