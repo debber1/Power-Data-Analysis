@@ -26,6 +26,13 @@ class timePeriodData:
         visuTimeseries(self.solarData, "Solar graph for "+self.periodName)
         barPlotTimeSeries(averageOverInterval(self.solarData), "15 minute solar averages for "+self.periodName)
 
+    def visualisePower(self):
+        """
+        This function visualises the power data of a timeperiod
+        """
+        visuTimeseries(self.powerData, "Power graph for "+self.periodName)
+        barPlotTimeSeries(averageOverInterval(self.powerData), "15 minute power averages for "+self.periodName)
+
     def visualise(self):
         """
         This function visualises the data of a timeperiod

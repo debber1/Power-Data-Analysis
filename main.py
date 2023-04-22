@@ -19,14 +19,16 @@ def main():
     startDay = str(localToUtc(datetime.datetime.now(timezone.utc)))
 
     # series = loadDataDayScale(datetime.datetime(2023,2,4,0,0,0),23)
-    seriesPowerMeter = loadDataDayScale(localToUtc(datetime.datetime(2023,2,25,0,0,0)),57)
-    #seriesPowerMeter[1].visualise()
+    seriesPowerMeter = loadDataDayScale(localToUtc(datetime.datetime(2023,2,25,0,0,0)),5)
+
+    seriesPowerMeter[1].visualisePower()
+    seriesPowerMeter[1].visualise()
     #for day in seriesPowerMeter:
     #    day.visualise()
     #    day.printStats()
-    if(save):
-        os.mkdir(startDay)
-    solarStatistics(seriesPowerMeter,8, save, startDay + "/")
-    powerStatistics(seriesPowerMeter,8, save, startDay + "/")
+    #if(save):
+    #    os.mkdir(startDay)
+    #solarStatistics(seriesPowerMeter,8, save, startDay + "/")
+    #powerStatistics(seriesPowerMeter,8, save, startDay + "/")
 
 main()
