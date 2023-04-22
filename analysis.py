@@ -48,23 +48,23 @@ def powerAnalysis(periods, PID, returns):
 
 
 
-def showGeneratedData(firstPeriod, time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower):
+def showGeneratedData(firstPeriod, time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower, save=False, savePath = "./"):
 
-    barPlotTimeSeries(mergeTimeSeries(time,totalPower), "Total power generation per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time,totalPower), "SOLAR: Total power generation per day", 0.5, save, savePath)
 
-    barPlotTimeSeries(mergeTimeSeries(time, activeTime), "Total active hours per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time, activeTime), "SOLAR: Total active hours per day", 0.5, save, savePath)
 
-    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "Most intensive interval average power per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "SOLAR: Most intensive interval average power per day", 0.5, save, savePath)
 
-    barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "Overview of peak average periods")
+    barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "SOLAR: Overview of peak average periods", 0.9, save, savePath)
 
-def showGeneratedPowerData(firstPeriod, time, mostIntensiveInterval, mostIntensiveIntervalPower):
+def showGeneratedPowerData(firstPeriod, time, mostIntensiveInterval, mostIntensiveIntervalPower, save=False, savePath = "./"):
 
-    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "Most intensive interval average power usage per day", 0.5)
+    barPlotTimeSeries(mergeTimeSeries(time, mostIntensiveIntervalPower), "POWER: Most intensive interval average power usage per day", 0.5, save, savePath)
 
-    barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "Overview of peak average usage periods")
+    barPlotDayOverview(periodOverviewList(firstPeriod.periodStart, firstPeriod.periodEnd, mostIntensiveInterval), "POWER: Overview of peak average usage periods", 0.9, save, savePath)
 
-def solarStatistics(periods, threads):
+def solarStatistics(periods, threads, save = False, savePath = "./"):
     """
     This function performs an analysis over multiple timeperiods
 
@@ -97,7 +97,7 @@ def solarStatistics(periods, threads):
         mostIntensiveIntervalPower += results[4]
     endTime = datetime.now()
     print("ANALYSIS: It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
-    showGeneratedData(periods[0], time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower)
+    showGeneratedData(periods[0], time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower, save, savePath)
 
 
 class myThread:
@@ -107,7 +107,7 @@ class myThread:
    def run(self):
         self.value = solarAnalysis(self.data)
 
-def powerStatistics(periods, threads):
+def powerStatistics(periods, threads, save = False, savePath = "./"):
     """
     This function performs an analysis over multiple timeperiods
 
@@ -136,4 +136,4 @@ def powerStatistics(periods, threads):
         mostIntensiveIntervalPower += results[2]
     endTime = datetime.now()
     print("ANALYSIS: It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
-    showGeneratedPowerData(periods[0], time, mostIntensiveInterval, mostIntensiveIntervalPower)
+    showGeneratedPowerData(periods[0], time, mostIntensiveInterval, mostIntensiveIntervalPower, save, savePath)
