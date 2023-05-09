@@ -1,5 +1,7 @@
 from visualise import *
 from util import *
+import logging
+logger = logging.getLogger(__name__)
 class timePeriodData:
 
     #Constructor
@@ -13,6 +15,7 @@ class timePeriodData:
         :param solarData: List of List: A List containing lists of datapoints, [[time, data], [time, data]]
         :param powerData: List of List: A List containing lists of datapoints, [[time, data], [time, data]]
         """
+        logger.debug("Making a new instance of timePeriodData")
         self.periodName = periodName
         self.periodStart = periodStart
         self.periodEnd = periodEnd
@@ -23,6 +26,7 @@ class timePeriodData:
         """
         This function visualises the solar data of a timeperiod
         """
+        logger.debug("Running solar visualisation")
         visuTimeseries(self.solarData, "Solar graph for "+self.periodName)
         barPlotTimeSeries(averageOverInterval(self.solarData), "15 minute solar averages for "+self.periodName)
 
@@ -30,6 +34,7 @@ class timePeriodData:
         """
         This function visualises the power data of a timeperiod
         """
+        logger.debug("Running power visualisation")
         visuTimeseries(self.powerData, "Power graph for "+self.periodName)
         barPlotTimeSeries(averageOverInterval(self.powerData), "15 minute power averages for "+self.periodName)
 
@@ -38,6 +43,7 @@ class timePeriodData:
         This function visualises the data of a timeperiod
         """
 
+        logger.debug("Running visualisation")
         visuThreeTimeseries(self.powerData, self.solarData, "Graph for "+self.periodName)
     
     def statistics(self):
@@ -46,6 +52,7 @@ class timePeriodData:
 
         :return: Dict: A dictionary with the results of the statistical analysis
         """
+        logger.debug("Running statistics")
         results = {}
         # Calculate the total watt hours produced by the solar panels
         results["Total power"] = integralTimeSeries(self.solarData)

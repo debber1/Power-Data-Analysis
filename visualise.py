@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
 import time
+import logging
+logger = logging.getLogger(__name__)
 def visuTimeseries(data, title = "Graph", save = False, savePath = "./"):
     plt.ioff()
     time1 = []

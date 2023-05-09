@@ -2,6 +2,8 @@ from util import *
 from db import *
 from datetime import datetime, timedelta 
 from timePeriod import *
+import logging
+logger = logging.getLogger(__name__)
 def loadDataDayScale(startDay, numberOfDays):
     """
     This function loads the relevant data for a timeperiod and devides it in daily segments
@@ -12,16 +14,16 @@ def loadDataDayScale(startDay, numberOfDays):
     """
     days = []
     for day in range(0,numberOfDays):
-        print("LOAD: loading day "+str(day + 1)+" of "+str(numberOfDays))
+        logger.info("loading day "+str(day + 1)+" of "+str(numberOfDays))
         startTime = datetime.now()
         data = solarTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + timedelta(days=day), startDay + timedelta(days=day+1))
         powerData = powerMeterTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + timedelta(days=day), startDay + timedelta(days=day+1))
         endTime = datetime.now()
-        print("LOAD: It took "+ str((endTime-startTime).total_seconds())+" seconds to load the data")
+        logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to load the data")
         startTime = datetime.now()
         period = timePeriodData((startDay+timedelta(days=day)).strftime("%d/%m/%Y"), startDay + timedelta(days=day), startDay + timedelta(days=day+1), rebaseTimeSeriesSolar(data), rebaseTimeSeriesSolar(powerData))
         endTime = datetime.now()
-        print("LOAD: It took "+ str((endTime-startTime).total_seconds())+" seconds to convert the data")
+        logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to convert the data")
         days.append(period)
     return days
  
@@ -35,14 +37,14 @@ def loadDataPowerMeterDayScale(startDay, numberOfDays):
     """
     days = []
     for day in range(0,numberOfDays):
-        print("LOAD: loading day "+str(day + 1)+" of "+str(numberOfDays))
+        logger.info("loading day "+str(day + 1)+" of "+str(numberOfDays))
         startTime = datetime.now()
         data = powerMeterTimePeriod(getValue("host"),getValue("port"),getValue("token"),getValue("org"),getValue("bucket"), startDay + timedelta(days=day), startDay + timedelta(days=day+1))
         endTime = datetime.now()
-        print("LOAD: It took "+ str((endTime-startTime).total_seconds())+" seconds to load the data")
+        logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to load the data")
         startTime = datetime.now()
         period = timePeriodData((startDay+timedelta(days=day)).strftime("%d/%m/%Y"), startDay + timedelta(days=day), startDay + timedelta(days=day+1), rebaseTimeSeriesSolar(data))
         endTime = datetime.now()
-        print("LOAD: It took "+ str((endTime-startTime).total_seconds())+" seconds to convert the data")
+        logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to convert the data")
         days.append(period)
     return days

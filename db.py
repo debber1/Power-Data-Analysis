@@ -1,7 +1,10 @@
 from influxdb_client import InfluxDBClient
 from util import *
+import logging
+logger = logging.getLogger(__name__)
 
 def testConnection(host, port, authToken, myOrg, bucket):
+    logger.debug("Testing db connection")
     client = InfluxDBClient(url=host+":"+port, token= authToken, org=myOrg)
     queryApi = client.query_api()
     query = 'from(bucket: "'+bucket+'")\
@@ -29,6 +32,7 @@ def solarTimePeriod(host, port, authToken, myOrg, bucket, startDate, stopDate):
     :param endDate: DateTime: The date and time where the data ends
     :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
     """
+    logger.debug("Downloading solar time period from server")
     client = InfluxDBClient(url=host+":"+port, token= authToken, org=myOrg)
     queryApi = client.query_api()
     query = 'from(bucket: "'+bucket+'")\
@@ -57,6 +61,7 @@ def powerMeterTimePeriod(host, port, authToken, myOrg, bucket, startDate, stopDa
     :param endDate: DateTime: The date and time where the data ends
     :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
     """
+    logger.debug("Downloading power time period from server")
     client = InfluxDBClient(url=host+":"+port, token= authToken, org=myOrg)
     queryApi = client.query_api()
     query = 'from(bucket: "'+bucket+'")\

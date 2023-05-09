@@ -1,6 +1,8 @@
 from datetime import datetime, timezone, timedelta
 from config import *
 import pandas as pd
+import logging
+logger = logging.getLogger(__name__)
 
 def utcToLocal(date):
     return date.replace(tzinfo=timezone.utc).astimezone(tz=None)
@@ -15,6 +17,7 @@ def integralTimeSeries(data):
     :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]
     :return: Int: total power used/produced over the timeperiod
     """
+    logger.debug("Running integralTimeSeries")
     pil = []
     dtl = []
     for pair in range(len(data)-1):
@@ -54,6 +57,7 @@ def activeTime(data):
     :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]
     :return: Int: Total amount of hours a device has been active
     """
+    logger.debug("Running activeTime")
     total = 0
     for pair in range(len(data)-1):
         #Extract 2 datapoints
@@ -76,10 +80,10 @@ def rebaseTimeSeriesSolar(data):
     :param data: List of List: A list with lists containing data points: [[time, data], [time, data]]
     :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
     """
+    logger.debug("Running rebaseTimeSeriesSolar")
     # Removing first and last index because it screws up the interpolation due to the way data gets collected by the irl inverter
     del data[0]
     del data[-1]
-
 
     values = []
     times = []
@@ -104,6 +108,7 @@ def mostIntesiveInterval(data, interval = 900):
     :param interval: Int: The duration of the time interval in seconds
     :return: List: [startInterval,TotalPower]
     """
+    logger.debug("Running mostIntensiveInterval")
     average = averageOverInterval(data,interval)
     max = average[0]
     for point in average:
@@ -120,6 +125,7 @@ def averageOverInterval(data, interval = 900):
     :param interval: Int: Desired interval (in seconds) (standard = 15min)
     :return: List of List: A list with lists containing data points: [[00:00, average], [00:15, Average]]
     """
+    logger.debug("Running averageOverInterval")
     values = []
     times = []
     for index in data:
@@ -140,6 +146,7 @@ def mergeTimeSeries(time, value):
     :param Value: List: A list with the corresponding values
     :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
     """ 
+    logger.debug("Running mergeTimeSeries")
 
     if len(time) != len(value):
         return 0
@@ -156,6 +163,7 @@ def periodOverviewList(periodStart, periodEnd, data):
     :param periodEnd: DateTime: The end of the period
     :return: List of List: A list with lists containing data points: [[time, data], [time, data]]
     """
+    logger.debug("Running periodOVerviewList")
     index = pd.date_range(periodStart, periodEnd, freq=str(int(data[0].freq.nanos/10**9))+"s").strftime('%H:%M:%S')
     result = []
     for i in index:

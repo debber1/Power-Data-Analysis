@@ -1,6 +1,9 @@
+import logging
+logger = logging.getLogger(__name__)
 option = dict()
 
 def config_setup():
+    logger.debug("Starting config setup")
     file = open("settings.txt", "r")
 
     for line in file:

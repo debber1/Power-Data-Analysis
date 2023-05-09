@@ -4,13 +4,15 @@ from visualise import *
 from datetime import datetime
 import math
 import multiprocessing
+import logging
+logger = logging.getLogger(__name__)
 def solarAnalysis(periods, PID, returns):
     """
     This function performs an analysis over multiple timeperiods
 
     :param periods: List of timePeriodData: a list of time period data
     """
-    print("ANALYSIS: Starting statistics")
+    logger.info("Starting statistics")
     # Extracting key statistics
     time = []
     totalPower = []
@@ -33,7 +35,7 @@ def powerAnalysis(periods, PID, returns):
 
     :param periods: List of timePeriodData: a list of time period data
     """
-    print("ANALYSIS: Starting statistics")
+    logger.info("Starting statistics")
     # Extracting key statistics
     time = []
     mostIntensiveInterval = []
@@ -96,7 +98,7 @@ def solarStatistics(periods, threads, save = False, savePath = "./"):
         mostIntensiveInterval += results[3]
         mostIntensiveIntervalPower += results[4]
     endTime = datetime.now()
-    print("ANALYSIS: It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
+    logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
     showGeneratedData(periods[0], time, totalPower, activeTime, mostIntensiveInterval, mostIntensiveIntervalPower, save, savePath)
 
 
@@ -135,5 +137,5 @@ def powerStatistics(periods, threads, save = False, savePath = "./"):
         mostIntensiveInterval += results[1]
         mostIntensiveIntervalPower += results[2]
     endTime = datetime.now()
-    print("ANALYSIS: It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
+    logger.info("It took "+ str((endTime-startTime).total_seconds())+" seconds to perform statistics on the data")
     showGeneratedPowerData(periods[0], time, mostIntensiveInterval, mostIntensiveIntervalPower, save, savePath)
